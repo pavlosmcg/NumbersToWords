@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace NumbersToWords
 {
@@ -42,19 +44,39 @@ namespace NumbersToWords
                 return words[number];
             }
 
-            if (number > 100)
+            var stuff = new List<OrderOfMagnitude>
             {
-                int hundred = number/100;
-                var remainder1 = number % 100;
-                var result = $"{Convert(hundred)} hundred";
-                if (remainder1 > 0)
-                    return result + $" and {Convert(remainder1)}";
+                new OrderOfMagnitude()
+                {
+                    Size = 1000,
+                    NameFormat = "{0} thousand",
+                    RemainderDisplayFormat = "{0}, {1}",
+                },
+                new OrderOfMagnitude()
+                {
+                    Size = 100,
+                    NameFormat = "{0} hundred",
+                    RemainderDisplayFormat = "{0} and {1}",
+                },
+            };
+
+            foreach (var magnitude in stuff)
+            {
+                if (number < magnitude.Size) continue;
+                int howMany = number/magnitude.Size;
+                var rem = number%magnitude.Size;
+                var result = string.Format(magnitude.NameFormat, Convert(howMany));
+                if (rem > 0)
+                    return string.Format(magnitude.RemainderDisplayFormat, result, Convert(rem));
                 return result;
             }
 
-            int decade = (number/10)*10;
+            // for tens, (52, etc...)
+            var decade = (number/10)*10;
             var remainder = number%10;
-            return $"{Convert(decade)}-{Convert(remainder)}";
+            if (remainder > 0)
+                return $"{words[decade]}-{words[remainder]}";
+            return words[decade];
         }
     }
 }

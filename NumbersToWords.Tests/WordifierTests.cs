@@ -5,6 +5,15 @@ namespace NumbersToWords.Tests
     [TestFixture]
     public class WordifierTests
     {
+        private static void DoTest(int input, string expected)
+        {
+            var unit = new Wordifier();
+
+            var result = unit.Convert(input);
+
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
         [TestCase(1, "One")]
         [TestCase(2, "Two")]
         [TestCase(3, "Three")]
@@ -16,11 +25,7 @@ namespace NumbersToWords.Tests
         [TestCase(9, "Nine")]
         public void Convert_Digits(int input, string expected)
         {
-            var unit = new Wordifier();
-
-            var result = unit.Convert(input);
-
-            Assert.That(result, Is.EqualTo(expected));
+            DoTest(input, expected);
         }
 
         [TestCase(10, "Ten")]
@@ -34,11 +39,7 @@ namespace NumbersToWords.Tests
         [TestCase(90, "Ninety")]
         public void Convert_Decades(int input, string expected)
         {
-            var unit = new Wordifier();
-
-            var result = unit.Convert(input);
-
-            Assert.That(result, Is.EqualTo(expected));
+            DoTest(input, expected);
         }
 
         [TestCase(53, "Fifty-Three")]
@@ -47,24 +48,26 @@ namespace NumbersToWords.Tests
         [TestCase(13, "Thirteen")]
         public void Convert_NumbersLessThan100(int input, string expected)
         {
-            var unit = new Wordifier();
-
-            var result = unit.Convert(input);
-
-            Assert.That(result, Is.EqualTo(expected));
+            DoTest(input, expected);
         }
 
         [TestCase(101, "One hundred and One")]
         [TestCase(151, "One hundred and Fifty-One")]
         [TestCase(999, "Nine hundred and Ninety-Nine")]
         [TestCase(500, "Five hundred")]
+        [TestCase(100, "One hundred")]
         public void Convert_NumbersLessThan1000(int input, string expected)
         {
-            var unit = new Wordifier();
+            DoTest(input, expected);
+        }
 
-            var result = unit.Convert(input);
-
-            Assert.That(result, Is.EqualTo(expected));
+        [TestCase(9999, "Nine thousand, Nine hundred and Ninety-Nine")]
+        [TestCase(2186, "Two thousand, One hundred and Eighty-Six")]
+        [TestCase(7100, "Seven thousand, One hundred")]
+        [TestCase(1000, "One thousand")]
+        public void Convert_NumbersLessThan10000(int input, string expected)
+        {
+            DoTest(input, expected);
         }
     }
 }
