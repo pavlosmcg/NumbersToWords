@@ -41,10 +41,20 @@ namespace NumbersToWords
             {
                 return words[number];
             }
-            
+
+            if (number > 100)
+            {
+                int hundred = number/100;
+                var remainder1 = number % 100;
+                var result = $"{Convert(hundred)} hundred";
+                if (remainder1 > 0)
+                    return result + $" and {Convert(remainder1)}";
+                return result;
+            }
+
             int decade = (number/10)*10;
             var remainder = number%10;
-            return $"{words[decade]}-{words[remainder]}";
+            return $"{Convert(decade)}-{Convert(remainder)}";
         }
     }
 }
