@@ -14,6 +14,12 @@ namespace NumbersToWords.Tests
             Assert.That(result, Is.EqualTo(expected));
         }
 
+        [Test]
+        public void Convert_Zero()
+        {
+            DoTest(0, "Zero");
+        }
+
         [TestCase(1, "One")]
         [TestCase(2, "Two")]
         [TestCase(3, "Three")]
@@ -63,9 +69,19 @@ namespace NumbersToWords.Tests
 
         [TestCase(9999, "Nine thousand, Nine hundred and Ninety-Nine")]
         [TestCase(2186, "Two thousand, One hundred and Eighty-Six")]
+        [TestCase(2017, "Two thousand and Seventeen")]
         [TestCase(7100, "Seven thousand, One hundred")]
         [TestCase(1000, "One thousand")]
         public void Convert_NumbersLessThan10000(int input, string expected)
+        {
+            DoTest(input, expected);
+        }
+
+        [TestCase(10000, "Ten thousand")]
+        [TestCase(10001, "Ten thousand and One")]
+        [TestCase(99999, "Ninety-Nine thousand, Nine hundred and Ninety-Nine")]
+        [TestCase(71453, "Seventy-One thousand, Four hundred and Fifty-Three")]
+        public void Convert_NumbersLessThan100000(int input, string expected)
         {
             DoTest(input, expected);
         }

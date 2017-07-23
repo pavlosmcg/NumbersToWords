@@ -6,6 +6,5 @@ namespace NumbersToWords
     {
         public int Size { get; set; }
         public string NameFormat { get; set; }
-        public string RemainderDisplayFormat { get; set; }
     }
 }

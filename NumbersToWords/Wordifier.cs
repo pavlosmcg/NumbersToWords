@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
+﻿using System.Collections.Generic;
 
 namespace NumbersToWords
 {
@@ -39,6 +37,9 @@ namespace NumbersToWords
 
         public string Convert(int number)
         {
+            if (number == 0)
+                return "Zero";
+
             if (words.ContainsKey(number))
             {
                 return words[number];
@@ -46,17 +47,15 @@ namespace NumbersToWords
 
             var stuff = new List<OrderOfMagnitude>
             {
-                new OrderOfMagnitude()
+                new OrderOfMagnitude
                 {
                     Size = 1000,
                     NameFormat = "{0} thousand",
-                    RemainderDisplayFormat = "{0}, {1}",
                 },
-                new OrderOfMagnitude()
+                new OrderOfMagnitude
                 {
                     Size = 100,
                     NameFormat = "{0} hundred",
-                    RemainderDisplayFormat = "{0} and {1}",
                 },
             };
 
@@ -67,7 +66,13 @@ namespace NumbersToWords
                 var rem = number%magnitude.Size;
                 var result = string.Format(magnitude.NameFormat, Convert(howMany));
                 if (rem > 0)
-                    return string.Format(magnitude.RemainderDisplayFormat, result, Convert(rem));
+                {
+                    if (rem < 100)
+                    {
+                        return $"{result} and {Convert(rem)}";
+                    }
+                    return $"{result}, {Convert(rem)}";
+                }
                 return result;
             }
 
